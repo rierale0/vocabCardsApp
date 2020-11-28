@@ -1,21 +1,77 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
 
-export default function App() {
+import FlashMessage from "react-native-flash-message";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+const Stack = createStackNavigator();
+import Home from "./app/components/screens/Home";
+import CreateVocabCard from "./app/components/screens/CreateVocabCard";
+import VocabCardDetails from "./app/components/screens/VocabCardDetails";
+import { SearchScreen } from "./app/components/screens/SearchScreen";
+import { SearchBarComponent } from "./app/components/shared/searchBar";
+import SvgUri from "react-native-svg-uri";
+
+function MyStack() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerTitleStyle: {
+            color: "#333333",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Create vocabulary card"
+        component={CreateVocabCard}
+        options={{
+          headerTitleStyle: {
+            color: "#333333",
+          },
+          headerBackImage: (props) => (
+            <SvgUri
+              style={{ marginLeft: 8 }}
+              source={require("./app/assets/image/backIconBlack.svg")}
+              {...props}
+            />
+          ),
+        }}
+      />
+      <Stack.Screen name="VocabCardDetails" component={VocabCardDetails} />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          headerTitle: (props) => <SearchBarComponent {...props} />,
+          headerBackImage: (props) => (
+            <SvgUri
+              style={{ marginLeft: 8 }}
+              source={require("./app/assets/image/backIconBlack.svg")}
+              {...props}
+            />
+          ),
+        }}
+      />
+    </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
+  );
+}
