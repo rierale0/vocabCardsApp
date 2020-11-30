@@ -1,26 +1,21 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  TouchableHighlight,
-  TouchableOpacityBase,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
+import { Avatar } from "react-native-elements";
 import SvgUri from "react-native-svg-uri";
 
-import Search from "../shared/search";
+import { UserAvatar } from "./userComponents";
 
 function Container(props) {
+  const avatar = props.userAvatar;
+
   return (
     <View style={styles.body}>
-      <TouchableOpacity onPress={props.AddVocabCardTarget}>
-        <Text style={({ color: "dodgerblue" }, styles.textInput)}>
-          Create vocabulary card
-        </Text>
-      </TouchableOpacity>
-
+      <View style={{ flexDirection: "row" }}>
+        <UserAvatar />
+        <TouchableOpacity onPress={props.AddVocabCardTarget}>
+          <Text style={styles.textInput}>Create vocabulary card</Text>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity onPress={props.searchTarget}>
         <SvgUri source={require("../../assets/image/search.svg")}></SvgUri>
       </TouchableOpacity>
@@ -35,7 +30,6 @@ const styles = StyleSheet.create({
     maxHeight: 1000,
     backgroundColor: "#F2F2F2",
     borderRadius: 17,
-    paddingLeft: 17,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
@@ -46,9 +40,10 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: "#A3A8AF",
     height: 35,
-    width: 250,
+    width: 200,
     borderRadius: 17,
     paddingLeft: 17,
+    marginLeft: 17,
     textAlignVertical: "center",
     fontSize: 16,
     color: "#333333",

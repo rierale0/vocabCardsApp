@@ -13,7 +13,6 @@ import FlashMessage from "react-native-flash-message";
 
 import { VocabCard } from "../shared/vocabCard";
 import { Container } from "../shared/container";
-import AddButton from "../shared/addButton";
 import { AddVocabCard } from "../shared/addVocabCard";
 import firebase from "../../database/firebase";
 

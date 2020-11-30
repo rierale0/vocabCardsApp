@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,8 +9,8 @@ import {
 import SvgUri from "react-native-svg-uri";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import firebase from "../../database/firebase";
-import { BottomSheet, Button, ListItem, Overlay } from "react-native-elements";
-import { Value } from "react-native-reanimated";
+import { Avatar, Button, ListItem, Overlay } from "react-native-elements";
+import { BottomSheet } from "react-native-btr";
 
 const progress = {
   lvl0: require("../../assets/image/0.svg"),
@@ -33,24 +33,25 @@ function VocabCard(props) {
 
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
-  const list = [
-    {
-      title: "Edit",
-      titleStyle: { color: "#333333" },
-      iconStyle: { backgroundColor: "red", width: 10, height: 10 },
-    },
-    { title: "Delete", titleStyle: { color: "#333333" } },
-    {
-      title: "Cancel",
-      containerStyle: { backgroundColor: "#F2F2F2" },
-      titleStyle: { color: "#333333" },
-      onPress: () => setShowBottomSheet(false),
-    },
-  ];
-
   const toggleBottomSheet = () => {
     setShowBottomSheet(!showBottomSheet);
   };
+
+  const list = [
+    {
+      name: "Edit",
+      avatar_url: require("../../assets/image/edit.svg"),
+    },
+    {
+      name: "Delete",
+      avatar_url: require("../../assets/image/trash.svg"),
+      onPress: toggleOverlay,
+    },
+    {
+      name: "Share",
+      avatar_url: require("../../assets/image/send.svg"),
+    },
+  ];
 
   const getVocabCardById = async (id) => {
     const deRef = firebase.db.collection("vocabCards").doc(id);
@@ -62,7 +63,6 @@ function VocabCard(props) {
     const ref = props.idProp;
     const dbRef = firebase.db.collection("vocabCards").doc(ref);
     await dbRef.delete();
-    toggleOverlay();
   };
 
   const [hearted, setHearted] = useState(false);
@@ -133,21 +133,28 @@ function VocabCard(props) {
           </Overlay>
         </View>
         <View>
-          <BottomSheet isVisible={showBottomSheet}>
-            {list.map((l, i) => (
-              <ListItem
-                key={i}
-                containerStyle={l.containerStyle}
-                onPress={l.onPress}
-              >
-                <ListItem.Content>
-                  <ListItem.Content style={l.iconStyle} />
-                  <ListItem.Title style={l.titleStyle}>
-                    {l.title}
-                  </ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            ))}
+          <BottomSheet
+            visible={showBottomSheet}
+            //setting the visibility state of the bottom shee
+            onBackButtonPress={toggleBottomSheet}
+            //Toggling the visibility state on the click of the back botton
+            onBackdropPress={toggleBottomSheet}
+            //Toggling the visibility state on the clicking out side of the sheet
+          >
+            {/*Bottom Sheet inner View*/}
+            <View>
+              {list.map((l, i) => (
+                <ListItem key={i} onPress={l.onPress}>
+                  <SvgUri
+                    style={(styles.icon, styles.mic)}
+                    source={l.avatar_url}
+                  ></SvgUri>
+                  <ListItem.Content>
+                    <ListItem.Title>{l.name}</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              ))}
+            </View>
           </BottomSheet>
         </View>
 

@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useReducer, useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
+import { Avatar } from "react-native-elements";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import firebase from "../../database/firebase";
+
+import { UserAvatar, UserName } from "../shared/userComponents";
+import { CollectionDropdown, PrivacyDropdown } from "../shared/dropdown";
 
 const CreateVocabCard = (props) => {
   const [state, setState] = useState({
@@ -18,8 +22,9 @@ const CreateVocabCard = (props) => {
     } else {
       await firebase.db.collection("vocabCards").add({
         phrase: state.phrase,
-        reprogrammingLevel: "lvl0",
-        pronunciationLevel: "lvl0",
+        reprogrammingLevel: "0",
+        pronunciationLevel: "0",
+        author: "own",
         timeStamp: Date.now(),
       });
 
@@ -29,6 +34,31 @@ const CreateVocabCard = (props) => {
   };
   return (
     <View style={styles.body}>
+      <View
+        style={{
+          width: "100%",
+          height: 80,
+          backgroundColor: "white",
+          alignItems: "center",
+          paddingLeft: 10,
+          flex: 1,
+          flexDirection: "row",
+        }}
+      >
+        <UserAvatar size="medium" />
+        <UserName
+          style={{
+            paddingLeft: 14,
+            bottom: 17,
+            fontSize: 20,
+            fontWeight: "bold",
+            color: "#333333",
+          }}
+        />
+        <PrivacyDropdown />
+        <CollectionDropdown />
+      </View>
+
       <TextInput
         multiline
         numberOfLines={4}

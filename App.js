@@ -39,13 +39,17 @@ function MyStack() {
         options={{
           headerTitleStyle: {
             color: "#333333",
+            bottom: 1.2,
+            marginLeft: -10,
           },
           headerBackImage: (props) => (
-            <SvgUri
-              style={{ marginLeft: 8 }}
-              source={require("./app/assets/image/backIconBlack.svg")}
-              {...props}
-            />
+            <View style={{ justifyContent: "center" }}>
+              <SvgUri
+                style={{ marginLeft: 8, height: "100%", top: 17 }}
+                source={require("./app/assets/image/backIconBlack.svg")}
+                {...props}
+              />
+            </View>
           ),
         }}
       />
